@@ -1,107 +1,108 @@
-#include <iostream>
-#include<ostream>
-
+#include<iostream>
+#include<string>
+#include<string.h>
 using namespace std;
-int Q[100],maxsize,rear,front;
-void Createqueue(int size)
-{
-    maxsize=size;
-   front=0;
-rear=-1;
+int s[50];
+int tos, maxSize;
+void initStack(int size) {
+	maxSize = size;
+	tos = -1;
 }
-void Enqueue(int e)
-{
-    rear++;
-    Q[rear]=e;
+void push(char e) {
+	tos++;
+	s[tos] = e;
 }
-int Dequeue()
-{
-    int temp;
-    temp=Q[front];
-    front++;
-    return (temp);
+bool isFull() {
+	if (tos == maxSize - 1)
+		return true;
+	else
+		return false;
 }
+char pop() {
+	char temp = s[tos];
+	tos--;
+	return temp;
+}
+bool isEmpty() {
+	if (tos == -1)
+		return true;
+	else
+		return false;
+}
+int atTop() {
+	return s[tos];
+}
+void printStack() {
 
-int isFull()
-{
-    if (rear==(maxsize-1))
-    return(1);
-    else
-        return (0);
-}
-int isEmpty()
-{
-    if(front>rear)
-        return(1);
-        else
-        return(0);
-}
-void printQueue()
-{
-    int i;
-    for(i=front;i<=rear;i++)
-    {
-        cout<<Q[i]<<" ";
-    }
-}
+	for (int i = tos; i > -1; i--) {
+		cout << " " << s[i];
+	}
 
+}
+int prec(char ch) {
+	if (ch == '+' || ch == '-')
+		return (1);
+	if (ch == '*' || ch == '/' || ch == '%')
+		return(2);
+	else
+		return(0);
+}
 int main()
 {
-     int size;
-    int ch;
-    int num;
-    cout<<"Enter size of Queue"<<endl;
-    cin>>size;
-    Createqueue(size);
-     do{
-    cout << "Select choice\n 1. Enqueue \n 2. Dequeue \n 3. isFull \n 4. isEmpty \n 5. printQueue \n 0. Exit " << endl;
-    cin>>ch;
-    switch(ch){
-            case 1: if(isFull()){
-                    cout<<"Queue is full";
+	char prefix[50];
+	int i, len;
+	cout << "Enter infix";
+	cin >> prefix;
+	for (len = 0; prefix[len] != '\0'; len++);
+
+	initStack(len);
+	cout << "Stack Size :-" <<len<< endl;
 
 
-                    }
-                    else
-                        {
-                            cout<<"Enter element"<<endl;
-                        cin>>num;
-                        Enqueue(num);
-                    }
-                    break;
-            case 2: if(isEmpty()){
-                cout<<"Queue is Empty";
+	for (i = len-1; i >=0 ; i--)// change
+	{
+		static int j = 0;
+		if (isdigit(prefix[i]))
+			push(prefix[i]);
+		else {
 
 
-                    }
-                    else
-                        Dequeue();
-                    break;
-            case 3: if(isFull())
-                        cout<<"Full"<<endl;
-                    else
-                        cout<<"Not Full"<<endl;
-                    break;
-            case 4: if(isEmpty())
-                        cout<<"queue is empty"<<endl;
-                    else
-                        cout<<"Not empty"<<endl;
-                    break;
-            case 5:
-                if(isEmpty()){
-                cout<<"Queue is empty "<<endl;
-                }
-                else
-                    printQueue();
-                break;
-            case 0: exit(0);
-                    break;
-            default:
-                    cout<<"Wrong choice"<<endl;
-                    }
-     }
-    while(ch!=0);
+			char lhs = pop();// change
+			char rhs = pop();// change
 
-    return 0;
+
+			if (j++ < 1) {
+				rhs = rhs - 48;
+				lhs = lhs - 48;
+			}
+
+			switch (prefix[i]) {
+			case '+':
+
+				push(rhs + lhs);
+				cout << endl;
+				break;
+			case '-':
+				push(lhs - rhs);
+				cout << endl;
+				break;
+			case '*':
+				push(lhs * rhs);
+				cout << endl;
+				break;
+			case '/':
+				push(lhs / rhs);
+				cout << endl;
+				break;
+			}
+		}
+	}
+
+
+
+	int some = pop();
+
+	cout << some << endl;
+
+
 }
-
