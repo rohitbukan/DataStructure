@@ -1,95 +1,75 @@
-/*Stack Program*/
-#include <iostream>
-
+/*WELLNESS*/
+#include<iostream>
+#include<string.h>
 using namespace std;
-int MaxSize;    //max size of stack
-int tos = -1;   // tos is top of stack
-int *s;
 
-void initStack(int size){   //size is size of stack to be created
-    MaxSize = size;
-    tos = -1;
-    s=new int[size];
-    cout<<"stack created"<<endl;
-    }
+char stack[20];
+int MaxSize, tos;
 
-
-void push(int e){   // e is for int element to be push
-
-    tos++;
-    s[tos]=e;
-
-
+void initStack() {
+ MaxSize = 20;
+ tos = -1;
 }
-int pop(){
-    int temp=tos;
-    tos--;
-    return s[temp];
 
+void push(char c) {
+ stack[++tos] = c;
 }
-int isFull(){
-    if(tos==MaxSize-1)
-            return 1;
-    else
-            return 0;
-    }
-int isEmpty(){
-    if(tos==-1)
-            return 1;
-    else
-            return 0;
-    }
-int atTop(){
-    return s[tos];
-    }
+
+int isFull() {
+ if (tos == MaxSize - 1) {
+  return 1;
+ }
+ else return 0;
+}
+
+int isEmpty() {
+ if (tos == -1) {
+  return 1;
+ }
+ else return 0;
+}
+
+char pop() {
+ return stack[tos--];
+}
+
+char atTop() {
+ return stack[tos];
+}
+
+void printStack() {
+ for (int i = tos; i > -1; i--) {
+  cout << stack[i] << "\t";
+ }
+ cout << endl;
+}
 
 
-int main()
-{   int size;
-    int ch;
-    int num;
-    cout<<"Enter size of stack to be created"<<endl;
-    cin>>size;
-    initStack(size);
 
-    do{
-    cout << "Select choice\n 1. push \n 2. pop \n 3. isFull \n 4. isEmpty \n 5. atTop \n 0. Exit " << endl;
-    cin>>ch;
-    switch(ch){
-            case 1: if(tos!=MaxSize-1){
-                    cout<<"Enter element";
-                    cin>>num;
-                    push(num);
-                    }
-                    else
-                        cout<<"stack is full"<<endl;
-                    break;
-            case 2: cout<<pop()<<endl;
-                    break;
-            case 3: if(isFull())
-                        cout<<"Full"<<endl;
-                    else
-                        cout<<"Not Full"<<endl;
-                    break;
-            case 4: if(isEmpty())
-                        cout<<"Stack is empty"<<endl;
-                    else
-                        cout<<"Not empty"<<endl;
-                    break;
-            case 5: if(!isEmpty()){
-                cout<<atTop()<<endl;
-                }
-                else
-                    cout<<"Stack is empty"<<endl;
-                break;
-            case 0: exit(0);
-                    break;
-            default:
-                    cout<<"Wrong choice"<<endl;
-                    }
+int main() {
+ char exp[20];
+ initStack();
 
-    }
-    while(ch!=0);
+ cout << "Enter the Expression"<<endl;
+ cin >> exp;
+ cout << "Enter expression size  "<<strlen(exp) << endl;
+ for (int i = 0; i < strlen(exp); i++) {
+  if (exp[i] == '{') {
+   push(exp[i]);
+  }
+  else if (exp[i] == '}') {
+   if (pop() != '{') {
+    cout << "Expression not well formed";
+    exit(0);
+   }
+  }
+ }
 
-    return 0;
+ if (isEmpty() == 1) {
+  cout << "Well formed expression";
+ }
+
+ else cout << "Expression is not well formed";
+ return 0;
+
 }
